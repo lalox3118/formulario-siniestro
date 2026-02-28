@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Denuncia de Siniestro</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul:       #0d3b6e;
+    --azul-med:   #1a5fa8;
+    --azul-light: #2d8cf0;
+    --acento:     #f0a500;
+    --verde-wa:   #25d366;
+    --fondo:      #f0f4f9;
+    --blanco:     #ffffff;
+    --gris-borde: #ccd6e0;
+    --gris-texto: #4a5568;
+    --rojo:       #e53e3e;
+    --radio:      12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--fondo);
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, var(--azul) 0%, var(--azul-med) 100%);
+    padding: 28px 20px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -30px; left: 30px;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .header-badge {
+    display: inline-block;
+    background: var(--acento);
+    color: var(--azul);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  .header h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    color: #fff;
+    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .header h1 span { color: var(--acento); }
+  .header p {
+    color: rgba(255,255,255,0.7);
+    font-size: 13px;
+    margin-top: 8px;
+    font-weight: 500;
+  }
+  .header-icons {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .chip {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── CONTAINER ── */
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 14px;
+  }
+
+  /* ── SECCIÓN ── */
+  .seccion {
+    margin-top: 20px;
+    background: var(--blanco);
+    border-radius: var(--radio);
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(13,59,110,0.08);
+  }
+  .seccion-titulo {
+    background: linear-gradient(90deg, var(--azul-med), var(--azul-light));
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 11px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .seccion-titulo .ico {
+    font-size: 16px;
+  }
+  .seccion-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .fila {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 400px) {
+    .fila { grid-template-columns: 1fr; }
+  }
+
+  /* ── CAMPO ── */
+  .campo { display: flex; flex-direction: column; gap: 5px; }
+  .campo label {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--azul);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+  .campo label .req { color: var(--rojo); margin-left: 2px; }
+  .campo input,
+  .campo textarea,
+  .campo select {
+    border: 1.5px solid var(--gris-borde);
+    border-radius: 8px;
+    padding: 11px 13px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 15px;
+    color: #1a202c;
+    background: #f8fafc;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    -webkit-appearance: none;
+    width: 100%;
+  }
+  .campo input:focus,
+  .campo textarea:focus,
+  .campo select:focus {
+    outline: none;
+    border-color: var(--azul-light);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(45,140,240,0.15);
+  }
+  .campo textarea {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.5;
+  }
+  .campo input.error,
+  .campo textarea.error {
+    border-color: var(--rojo);
+    box-shadow: 0 0 0 3px rgba(229,62,62,0.12);
+  }
+  .error-msg {
+    font-size: 11px;
+    color: var(--rojo);
+    font-weight: 600;
+    display: none;
+  }
+  .error-msg.visible { display: block; }
+
+  /* ── CHECKBOXES / RADIO ── */
+  .opciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 2px;
+  }
+  .opcion-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    background: #f0f4f9;
+    border: 1.5px solid var(--gris-borde);
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gris-texto);
+    transition: all 0.18s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .opcion-label:active { transform: scale(0.97); }
+  .opcion-label input[type="radio"],
+  .opcion-label input[type="checkbox"] {
+    width: 17px; height: 17px;
+    accent-color: var(--azul-med);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .opcion-label:has(input:checked) {
+    background: #e8f1fc;
+    border-color: var(--azul-med);
+    color: var(--azul);
+  }
+
+  /* ── DOCUMENTACIÓN CHIPS ── */
+  .docs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .doc-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f0f4f9;
+    border: 1.5px solid var(--gris-borde);
+    border-radius: 8px;
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: all 0.18s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .doc-chip input { accent-color: var(--verde-wa); width: 16px; height: 16px; flex-shrink: 0; }
+  .doc-chip span { font-size: 12.5px; font-weight: 600; color: var(--gris-texto); line-height: 1.3; }
+  .doc-chip:has(input:checked) {
+    background: #e6f9ef;
+    border-color: var(--verde-wa);
+  }
+  .doc-chip:has(input:checked) span { color: #1a6b3a; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: var(--fondo);
+    margin: 2px 0;
+  }
+
+  /* ── BOTÓN WHATSAPP ── */
+  .btn-wa-wrap {
+    margin-top: 24px;
+    padding: 0 14px;
+  }
+  .btn-wa {
+    width: 100%;
+    background: linear-gradient(135deg, #25d366, #128c4e);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 18px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 6px 24px rgba(37,211,102,0.35);
+    transition: transform 0.15s, box-shadow 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn-wa:active {
+    transform: scale(0.97);
+    box-shadow: 0 3px 12px rgba(37,211,102,0.25);
+  }
+  .btn-wa svg { width: 26px; height: 26px; flex-shrink: 0; }
+
+  .nota-envio {
+    text-align: center;
+    font-size: 12px;
+    color: #888;
+    margin-top: 10px;
+    padding: 0 10px;
+    line-height: 1.5;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    margin-top: 30px;
+    padding: 0 20px;
+    font-size: 12px;
+    color: #aaa;
+    line-height: 1.6;
+  }
+
+  /* ── ANIMACIÓN ENTRADA ── */
+  .seccion {
+    animation: fadeUp 0.4s ease both;
+  }
+  .seccion:nth-child(1) { animation-delay: 0.05s; }
+  .seccion:nth-child(2) { animation-delay: 0.10s; }
+  .seccion:nth-child(3) { animation-delay: 0.15s; }
+  .seccion:nth-child(4) { animation-delay: 0.20s; }
+  .seccion:nth-child(5) { animation-delay: 0.25s; }
+  .seccion:nth-child(6) { animation-delay: 0.30s; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #1a202c;
+    color: #fff;
+    padding: 13px 22px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+    transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
+    z-index: 999;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="container">
+    <div class="header-badge">Productor de Seguros</div>
+    <h1>Denuncia de<br><span>Siniestro</span></h1>
+    <p>Completá todos los campos y envianos el formulario</p>
+    <div class="header-icons">
+      <span class="chip">🚗 Autos</span>
+      <span class="chip">🏍️ Motos</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- SECCIÓN 1: ASEGURADO -->
+  <div class="seccion">
+    <div class="seccion-titulo"><span class="ico">👤</span> Datos del Asegurado</div>
+    <div class="seccion-body">
+      <div class="fila">
+        <div class="campo">
+          <label>Nombre y Apellido <span class="req">*</span></label>
+          <input type="text" id="nombre" placeholder="Ej: Juan Pérez" autocomplete="name">
+          <span class="error-msg" id="err-nombre">Campo requerido</span>
+        </div>
+        <div class="campo">
+          <label>DNI <span class="req">*</span></label>
+          <input type="number" id="dni" placeholder="Ej: 30123456">
+          <span class="error-msg" id="err-dni">Campo requerido</span>
+        </div>
+      </div>
+      <div class="fila">
+        <div class="campo">
+          <label>Teléfono <span class="req">*</span></label>
+          <input type="tel" id="telefono" placeholder="Ej: 341 5551234" autocomplete="tel">
+          <span class="error-msg" id="err-telefono">Campo requerido</span>
+        </div>
+        <div class="campo">
+          <label>Email</label>
+          <input type="email" id="email" placeholder="correo@email.com" autocomplete="email">
+        </div>
+      </div>
+      <div class="fila">
+        <div class="campo">
+          <label>N° de Póliza</label>
+          <input type="text" id="poliza" placeholder="Ej: 00123456">
+        </div>
+        <div class="campo">
+          <label>Compañía Aseguradora</label>
+          <input type="text" id="compania" placeholder="Ej: La Caja">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 2: VEHÍCULO -->
+  <div class="seccion">
+    <div class="seccion-titulo"><span class="ico">🚗</span> Datos del Vehículo</div>
+    <div class="seccion-body">
+      <div class="campo">
+        <label>Tipo de Vehículo <span class="req">*</span></label>
+        <div class="opciones">
+          <label class="opcion-label">
+            <input type="radio" name="tipo_vehiculo" value="Auto"> Auto
+          </label>
+          <label class="opcion-label">
+            <input type="radio" name="tipo_vehiculo" value="Moto"> Moto
+          </label>
+        </div>
+        <span class="error-msg" id="err-tipo">Seleccioná el tipo</span>
+      </div>
+      <div class="fila">
+        <div class="campo">
+          <label>Marca y Modelo <span class="req">*</span></label>
+          <input type="text" id="marca" placeholder="Ej: Ford Ka 2020">
+          <span class="error-msg" id="err-marca">Campo requerido</span>
+        </div>
+        <div class="campo">
+          <label>Patente <span class="req">*</span></label>
+          <input type="text" id="patente" placeholder="Ej: AB123CD" style="text-transform:uppercase">
+          <span class="error-msg" id="err-patente">Campo requerido</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 3: SINIESTRO -->
+  <div class="seccion">
+    <div class="seccion-titulo"><span class="ico">💥</span> Datos del Siniestro</div>
+    <div class="seccion-body">
+      <div class="fila">
+        <div class="campo">
+          <label>Fecha <span class="req">*</span></label>
+          <input type="date" id="fecha">
+          <span class="error-msg" id="err-fecha">Campo requerido</span>
+        </div>
+        <div class="campo">
+          <label>Hora Aproximada</label>
+          <input type="time" id="hora">
+        </div>
+      </div>
+      <div class="campo">
+        <label>Lugar (calle y localidad) <span class="req">*</span></label>
+        <input type="text" id="lugar" placeholder="Ej: Av. Pellegrini y Córdoba, Rosario">
+        <span class="error-msg" id="err-lugar">Campo requerido</span>
+      </div>
+      <div class="campo">
+        <label>Descripción de lo ocurrido <span class="req">*</span></label>
+        <textarea id="descripcion" placeholder="Describí brevemente cómo ocurrió el siniestro..."></textarea>
+        <span class="error-msg" id="err-descripcion">Campo requerido</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 4: TERCEROS -->
+  <div class="seccion">
+    <div class="seccion-titulo"><span class="ico">👥</span> Terceros Involucrados</div>
+    <div class="seccion-body">
+      <div class="campo">
+        <label>¿Hubo terceros involucrados?</label>
+        <div class="opciones">
+          <label class="opcion-label">
+            <input type="radio" name="terceros" value="Si" onchange="toggleTerceros(true)"> Sí
+          </label>
+          <label class="opcion-label">
+            <input type="radio" name="terceros" value="No" onchange="toggleTerceros(false)" checked> No
+          </label>
+        </div>
+      </div>
+      <div id="bloque-terceros" style="display:none; display:flex; flex-direction:column; gap:14px;">
+        <div class="fila">
+          <div class="campo">
+            <label>Nombre del Tercero</label>
+            <input type="text" id="nombre-tercero" placeholder="Nombre completo">
+          </div>
+          <div class="campo">
+            <label>Teléfono del Tercero</label>
+            <input type="tel" id="tel-tercero" placeholder="Ej: 341 5559876">
+          </div>
+        </div>
+        <div class="fila">
+          <div class="campo">
+            <label>Patente del Tercero</label>
+            <input type="text" id="patente-tercero" placeholder="Ej: AB123CD" style="text-transform:uppercase">
+          </div>
+          <div class="campo">
+            <label>Compañía de Seguro</label>
+            <input type="text" id="compania-tercero" placeholder="Ej: Sancor">
+          </div>
+        </div>
+        <div class="campo">
+          <label>Tipo de Vehículo del Tercero</label>
+          <div class="opciones">
+            <label class="opcion-label">
+              <input type="radio" name="tipo_tercero" value="Auto"> Auto
+            </label>
+            <label class="opcion-label">
+              <input type="radio" name="tipo_tercero" value="Moto"> Moto
+            </label>
+            <label class="opcion-label">
+              <input type="radio" name="tipo_tercero" value="Otro"> Otro
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 5: LESIONADOS -->
+  <div class="seccion">
+    <div class="seccion-titulo"><span class="ico">🤕</span> Lesionados</div>
+    <div class="seccion-body">
+      <div class="campo">
+        <label>¿Hubo lesionados?</label>
+        <div class="opciones">
+          <label class="opcion-label">
+            <input type="radio" name="lesionados" value="Si" onchange="toggleLesionados(true)"> Sí
+          </label>
+          <label class="opcion-label">
+            <input type="radio" name="lesionados" value="No" onchange="toggleLesionados(false)" checked> No
+          </label>
+        </div>
+      </div>
+      <div id="bloque-lesionados" style="display:none;">
+        <div class="campo">
+          <label>Descripción</label>
+          <textarea id="desc-lesionados" placeholder="Describí quiénes resultaron lesionados y cómo..." style="min-height:65px"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 6: DOCUMENTACIÓN -->
+  <div class="seccion">
+    <div class="seccion-titulo"><span class="ico">📸</span> Documentación a Adjuntar</div>
+    <div class="seccion-body">
+      <p style="font-size:12.5px; color:#666; margin-bottom:4px;">Marcá lo que vas a enviar junto con este formulario:</p>
+      <div class="docs-grid">
+        <label class="doc-chip">
+          <input type="checkbox" name="doc" value="Fotos de los daños">
+          <span>📷 Fotos de los daños</span>
+        </label>
+        <label class="doc-chip">
+          <input type="checkbox" name="doc" value="DNI frente y dorso">
+          <span>🪪 DNI frente y dorso</span>
+        </label>
+        <label class="doc-chip">
+          <input type="checkbox" name="doc" value="Licencia de conducir">
+          <span>🚗 Licencia de conducir</span>
+        </label>
+        <label class="doc-chip">
+          <input type="checkbox" name="doc" value="Tarjeta verde/azul">
+          <span>📄 Tarjeta verde/azul</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- BOTÓN WHATSAPP -->
+<div class="btn-wa-wrap">
+  <button class="btn-wa" onclick="enviarWhatsApp()">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+    Enviar por WhatsApp
+  </button>
+  <p class="nota-envio">Al tocar el botón se abrirá WhatsApp con todos los datos cargados listos para enviar.</p>
+</div>
+
+<div class="footer">
+  Productor de Seguros · WhatsApp: +54 341 322-1063<br>
+  <span style="font-size:11px">Este formulario no almacena tus datos</span>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // Fecha de hoy por defecto
+  document.getElementById('fecha').valueAsDate = new Date();
+
+  function toggleTerceros(show) {
+    const b = document.getElementById('bloque-terceros');
+    b.style.display = show ? 'flex' : 'none';
+  }
+  function toggleLesionados(show) {
+    const b = document.getElementById('bloque-lesionados');
+    b.style.display = show ? 'block' : 'none';
+  }
+  // Inicializar estado
+  toggleTerceros(false);
+  toggleLesionados(false);
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  function val(id) {
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : '';
+  }
+
+  function getRadio(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : '';
+  }
+
+  function getCheckboxes(name) {
+    const els = document.querySelectorAll(`input[name="${name}"]:checked`);
+    return Array.from(els).map(e => e.value);
+  }
+
+  function setError(id, show) {
+    const el = document.getElementById('err-' + id);
+    const inp = document.getElementById(id);
+    if (el) el.classList.toggle('visible', show);
+    if (inp) inp.classList.toggle('error', show);
+  }
+
+  function enviarWhatsApp() {
+    // Validaciones
+    let ok = true;
+    const reqs = ['nombre','dni','telefono','marca','patente','lugar','descripcion'];
+    reqs.forEach(id => {
+      const empty = !val(id);
+      setError(id, empty);
+      if (empty) ok = false;
+    });
+
+    // Fecha
+    const fechaEmpty = !val('fecha');
+    setError('fecha', fechaEmpty);
+    if (fechaEmpty) ok = false;
+
+    // Tipo vehículo
+    const tipoVeh = getRadio('tipo_vehiculo');
+    const tipoErr = document.getElementById('err-tipo');
+    if (!tipoVeh) {
+      tipoErr.classList.add('visible');
+      ok = false;
+    } else {
+      tipoErr.classList.remove('visible');
+    }
+
+    if (!ok) {
+      showToast('⚠️ Completá los campos obligatorios');
+      // Scroll al primer error
+      const firstErr = document.querySelector('.error');
+      if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    // Terceros
+    const terceros = getRadio('terceros');
+    const hayTerceros = terceros === 'Si';
+
+    // Lesionados
+    const lesionados = getRadio('lesionados');
+    const hayLesionados = lesionados === 'Si';
+
+    // Documentación
+    const docs = getCheckboxes('doc');
+
+    // Formatear fecha
+    const fechaRaw = val('fecha');
+    const [yy, mm, dd] = fechaRaw.split('-');
+    const fechaFmt = `${dd}/${mm}/${yy}`;
+
+    // Hora
+    const hora = val('hora') || 'No especificada';
+
+    // Armar mensaje
+    let msg = '';
+    msg += `🚗🏍️ *DENUNCIA DE SINIESTRO*\n`;
+    msg += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+
+    msg += `*👤 DATOS DEL ASEGURADO*\n`;
+    msg += `• Nombre: ${val('nombre')}\n`;
+    msg += `• DNI: ${val('dni')}\n`;
+    msg += `• Teléfono: ${val('telefono')}\n`;
+    if (val('email')) msg += `• Email: ${val('email')}\n`;
+    if (val('poliza')) msg += `• Póliza: ${val('poliza')}\n`;
+    if (val('compania')) msg += `• Compañía: ${val('compania')}\n`;
+
+    msg += `\n*🚗 DATOS DEL VEHÍCULO*\n`;
+    msg += `• Tipo: ${tipoVeh}\n`;
+    msg += `• Marca/Modelo: ${val('marca')}\n`;
+    msg += `• Patente: ${val('patente').toUpperCase()}\n`;
+
+    msg += `\n*💥 DATOS DEL SINIESTRO*\n`;
+    msg += `• Fecha: ${fechaFmt}\n`;
+    msg += `• Hora: ${hora}\n`;
+    msg += `• Lugar: ${val('lugar')}\n`;
+    msg += `• Descripción: ${val('descripcion')}\n`;
+
+    msg += `\n*👥 TERCEROS INVOLUCRADOS*\n`;
+    msg += `• ¿Hubo terceros? ${terceros}\n`;
+    if (hayTerceros) {
+      if (val('nombre-tercero')) msg += `• Nombre: ${val('nombre-tercero')}\n`;
+      if (val('tel-tercero'))    msg += `• Teléfono: ${val('tel-tercero')}\n`;
+      if (val('patente-tercero')) msg += `• Patente: ${val('patente-tercero').toUpperCase()}\n`;
+      const tipoTerc = getRadio('tipo_tercero');
+      if (tipoTerc) msg += `• Tipo vehículo: ${tipoTerc}\n`;
+      if (val('compania-tercero')) msg += `• Compañía: ${val('compania-tercero')}\n`;
+    }
+
+    msg += `\n*🤕 LESIONADOS*\n`;
+    msg += `• ¿Hubo lesionados? ${lesionados}\n`;
+    if (hayLesionados && val('desc-lesionados')) {
+      msg += `• Descripción: ${val('desc-lesionados')}\n`;
+    }
+
+    if (docs.length > 0) {
+      msg += `\n*📸 DOCUMENTACIÓN A ENVIAR*\n`;
+      docs.forEach(d => msg += `✅ ${d}\n`);
+    }
+
+    msg += `\n_Enviado desde formulario digital_`;
+
+    const url = `https://wa.me/543413221063?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+  }
+</script>
+</body>
+</html>
